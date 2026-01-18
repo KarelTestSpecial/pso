@@ -5,8 +5,58 @@ document.addEventListener('DOMContentLoaded', () => {
     const productScoreInput = document.getElementById('product-score');
     const productTableBody = document.querySelector('#product-table tbody');
     const ingredientTableBody = document.querySelector('#ingredient-table tbody');
+    const exportBtn = document.getElementById('export-btn');
+    const importBtn = document.getElementById('import-btn');
+    const importFileInput = document.getElementById('import-file');
 
     let products = [];
+
+    exportBtn.addEventListener('click', () => {
+        const dataStr = JSON.stringify(products, null, 2);
+        const dataBlob = new Blob([dataStr], {type: "application/json"});
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'psoriasis_products.json';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    });
+
+    importBtn.addEventListener('click', () => {
+        importFileInput.click();
+    });
+
+    importFileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const importedProducts = JSON.parse(e.target.result);
+                // Basic validation
+                if (Array.isArray(importedProducts)) {
+                    products = importedProducts;
+                    saveData();
+                    renderProducts();
+                    analyzeIngredients();
+                    alert('Data succesvol geïmporteerd!');
+                } else {
+                    alert('Ongeldig bestandsformaat.');
+                }
+            } catch (error) {
+                alert('Fout bij het lezen van het bestand.');
+                console.error("Error parsing JSON:", error);
+            }
+        };
+        reader.readAsText(file);
+        // Reset file input to allow re-importing the same file
+        importFileInput.value = '';
+    });
 
     function saveData() {
         localStorage.setItem('products', JSON.stringify(products));
