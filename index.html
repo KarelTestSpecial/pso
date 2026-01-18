@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psoriasis Doucheproduct Analyse</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Psoriasis Doucheproduct Analyse</h1>
+
+    <div class="container">
+        <h2>Product Toevoegen</h2>
+        <form id="add-product-form">
+            <input type="text" id="product-name" placeholder="Productnaam" required>
+            <input type="text" id="product-ingredients" placeholder="Ingrediënten (gescheiden door komma's)" required>
+            <input type="number" id="product-score" placeholder="Score (0-10)" min="0" max="10" step="0.1" required>
+            <button type="submit">Product Toevoegen</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Producten</h2>
+        <table id="product-table">
+            <thead>
+                <tr>
+                    <th>Naam</th>
+                    <th>Ingrediënten</th>
+                    <th>Score</th>
+                    <th>Acties</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Producten worden hier dynamisch toegevoegd -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>Ingrediënten Analyse</h2>
+        <table id="ingredient-table">
+            <thead>
+                <tr>
+                    <th>Ingrediënt</th>
+                    <th>Gemiddelde Score</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Ingrediënten analyse wordt hier dynamisch weergegeven -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
