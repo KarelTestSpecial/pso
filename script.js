@@ -121,30 +121,33 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function analyzeIngredients() {
+        // Sort products by score descending (highest score first)
+        const sortedProducts = [...products].sort((a, b) => b.score - a.score);
+        
         const ingredientScores = {};
-        const ingredientCounts = {};
 
-        products.forEach(product => {
+        sortedProducts.forEach(product => {
             product.ingredients.forEach(ingredient => {
-                if (!ingredientScores[ingredient]) {
-                    ingredientScores[ingredient] = 0;
-                    ingredientCounts[ingredient] = 0;
+                // Only assign a score if the ingredient hasn't been seen yet.
+                // Since we iterate from best to worst product, the first time we see
+                // an ingredient, it is associated with the highest scoring product it belongs to.
+                if (!Object.prototype.hasOwnProperty.call(ingredientScores, ingredient)) {
+                    ingredientScores[ingredient] = product.score;
                 }
-                ingredientScores[ingredient] += product.score;
-                ingredientCounts[ingredient]++;
             });
         });
 
-        const ingredientAverages = Object.keys(ingredientScores).map(ingredient => {
+        const ingredientAnalysis = Object.keys(ingredientScores).map(ingredient => {
             return {
                 name: ingredient,
-                averageScore: ingredientScores[ingredient] / ingredientCounts[ingredient]
+                score: ingredientScores[ingredient]
             };
         });
 
-        ingredientAverages.sort((a, b) => b.averageScore - a.averageScore);
+        // Sort ingredients by score descending for display
+        ingredientAnalysis.sort((a, b) => b.score - a.score);
 
-        renderIngredientAnalysis(ingredientAverages);
+        renderIngredientAnalysis(ingredientAnalysis);
     }
 
     function renderIngredientAnalysis(analysis) {
@@ -153,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${item.name}</td>
-                <td>${item.averageScore.toFixed(2)}</td>
+                <td>${item.score.toFixed(2)}</td>
             `;
             ingredientTableBody.appendChild(row);
         });
