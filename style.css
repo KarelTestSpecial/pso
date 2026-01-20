@@ -22,6 +22,24 @@ th {
     background-color: #f2f2f2;
 }
 
+td.editable {
+    cursor: pointer;
+}
+
+td.editable:hover {
+    background-color: #fafafa;
+}
+
+td.editable input {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 4px;
+    border: 1px solid #007bff;
+    outline: none;
+}
+
 textarea#product-ingredients {
   width: 500px;
   vertical-align: top;
